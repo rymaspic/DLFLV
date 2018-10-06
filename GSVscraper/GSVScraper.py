@@ -1,8 +1,32 @@
 # # # # # # # # # # # # # # # #
-# By Ariel Noyman https://github.com/RELNO/
+
+# {{ DLFLV }}
+# Copyright (C) {{ 2017 }}  {{ Ariel Noyman }}
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# # # # # # # # # # # # # # # # #
+
+# "@context": "https://github.com/RELNO/", "@type": "Person", "address": {
+# "@type": "75 Amherst St, Cambridge, MA 02139", "addressLocality":
+# "Cambridge", "addressRegion": "MA",},
+# "jobTitle": "Research Scientist", "name": "Ariel Noyman",
+# "alumniOf": "MIT", "url": "http://arielnoyman.com",
+# "https://www.linkedin.com/", "http://twitter.com/relno",
+# https://github.com/RELNO]
+# # # # # # # # # # # # # # # #
 #
 # USAGE:
-# python3 0_StViewScraper.py -l __FILE NAME__ -i __ANGLE__
+# python3 GSVScraper.py -l __FILE NAME__ -i __ANGLE__ -k __GOOGLEKEY__
+#
 # # # # # # # # # # # # # # # #
 
 # urllib/requests for accessing web content
@@ -31,8 +55,7 @@ head = "&heading="
 # the pitch[height] of the camera
 pitch = "&pitch=-0.76"
 loc = "&location="
-# API key
-suf = "&amp;key=AIzaSyC8ejNwVI-DZcv8cE-zcES21k0nlQeD5Nk"
+
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -40,8 +63,13 @@ ap.add_argument("-l", "--locations", required=True,
                 help="filename of locations JSON")
 ap.add_argument("-i", "--interval",  type=int, required=True,
                 help="camera angle intervals [0 to 360 degrees]")
+ap.add_argument("-k", "--key", required=True,
+                help="Google Places key")
 
 args = vars(ap.parse_args())
+
+# API key
+suf = "&amp;key=" + json.load(open(args["key"]))
 
 # the addresses in this text file will complete
 # the URL needed to return a streetview image and provide
