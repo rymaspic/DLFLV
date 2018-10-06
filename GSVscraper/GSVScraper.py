@@ -50,11 +50,11 @@ import argparse
 # # # # # # # # # # # # # # # #
 
 # streetview url up to the address
-pre = "https://maps.googleapis.com/maps/api/streetview?size=300x300"
+pre = "https://maps.googleapis.com/maps/api/streetview?"
 head = "&heading="
 # the pitch[height] of the camera
 pitch = "&pitch=-0.76"
-loc = "&location="
+loc = "location="
 
 
 # construct the argument parse and parse the arguments
@@ -69,7 +69,7 @@ ap.add_argument("-k", "--key", required=True,
 args = vars(ap.parse_args())
 
 # API key
-suf = "&amp;key=" + json.load(open(args["key"]))
+suf = "&key=" + args["key"]
 
 # the addresses in this text file will complete
 # the URL needed to return a streetview image and provide
@@ -103,9 +103,13 @@ def GetGSV(LOCATIONS, INTERVAL):
                 # get view angles from each point
                 for ang in range(0, 360, INTERVAL):
                     filenameCounter += 1
+
                     # creates the url that will be passed to the url reader,
                     # a google streetview image for each address in the address text file
-                    URL = pre + head + str(ang) + pitch + loc + latLon + suf
+                    URL = pre + loc + latLon + '&size=300x300' + \
+                        head + str(ang) + pitch + suf
+
+                    print('\n', URL, '\n')
                     # creates the filename needed
                     # to save each address's streetview image locally
 

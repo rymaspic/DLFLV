@@ -1,3 +1,4 @@
 /.vscode
 /[s]Source_pyimagesearch
 key
+.DS_Store
