@@ -25,7 +25,7 @@
 # # # # # # # # # # # # # # # #
 #
 # USAGE:
-# python3 GSVScraper.py -l __FILE NAME__ -i __ANGLE__ -k __GOOGLEKEY__
+# python3 GSVScraper.py -l __FILE NAME__ -i __ANGLE__ -k __KEY__
 #
 # # # # # # # # # # # # # # # #
 
