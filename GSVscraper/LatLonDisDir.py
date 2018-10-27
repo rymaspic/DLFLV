@@ -59,7 +59,7 @@ class LatLonDisDir:
         import math
         import requests
         import xml.etree.ElementTree as ET
-        from gmplot import gmplot
+        # from gmplot import gmplot
 
         # vars
         gmapLatList = []

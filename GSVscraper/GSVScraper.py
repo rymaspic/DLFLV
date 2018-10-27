@@ -89,7 +89,7 @@ def GetGSV(LOCATIONS, INTERVAL):
 
         # make the folders for each class if missing
         # this is the directory that will store the streetview images
-        classFolder = r"train/" + str(dl_class)
+        classFolder = r"train_test/" + str(dl_class)
         if not os.path.exists(classFolder):
             os.makedirs(classFolder)
 
@@ -107,14 +107,14 @@ def GetGSV(LOCATIONS, INTERVAL):
                     # creates the url that will be passed to the url reader,
                     # a google streetview image for each address in the address text file
                     URL = pre + loc + latLon + '&size=300x300' + \
-                        head + str(ang) + pitch + suf
+                        head + str(ang) + pitch + '&source=outdoor' + suf  #only get the indoor images
 
                     print('\n', URL, '\n')
                     # creates the filename needed
                     # to save each address's streetview image locally
 
                     filename = os.path.join(
-                        classFolder, "00" + str(filenameCounter) + ".jpg")
+                        classFolder, "nc00" + str(filenameCounter) + "_ang" + str(ang) + ".jpg")
                     # fetches and saves the streetview image
                     # for each address using the url created in the previous steps
                     img = urllib.request.urlretrieve(URL, filename)
