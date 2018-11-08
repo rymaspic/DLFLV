@@ -23,8 +23,6 @@
 # "https://www.linkedin.com/", "http://twitter.com/relno",
 # https://github.com/RELNO]
 # # # # # # # # # # # # # # # #
-
-# updated by Xuankai 2018 Oct
 #
 # USAGE:
 # python3 GSVScraper.py -l __FILE NAME__ -i __ANGLE__ -k __KEY__
