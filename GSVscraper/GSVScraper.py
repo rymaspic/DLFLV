@@ -22,6 +22,7 @@
 # "alumniOf": "MIT", "url": "http://arielnoyman.com",
 # "https://www.linkedin.com/", "http://twitter.com/relno",
 # https://github.com/RELNO]
+
 # # # # # # # # # # # # # # # #
 #
 # USAGE:
@@ -55,6 +56,7 @@ head = "&heading="
 # the pitch[height] of the camera
 pitch = "&pitch=-0.76"
 loc = "location="
+title = "cluster" # "nocluster"
 
 
 # construct the argument parse and parse the arguments
@@ -89,20 +91,21 @@ def GetGSV(LOCATIONS, INTERVAL):
 
         # make the folders for each class if missing
         # this is the directory that will store the streetview images
-        classFolder = r"train_test/" + str(dl_class)
+        classFolder = r"images/" + title + "/" + str(dl_class)
         if not os.path.exists(classFolder):
             os.makedirs(classFolder)
 
         # go through each location in this class and get its photos
         for location in locations[dl_class]:
             # 0 to 360 in jumps of 30 degrees
+            filenameCounter += 1
             latLon = str(location[0]) + ',' + str(location[1])
             # check if this Google SV URL returns a valid SV images or not
             if (checkSV(latLon) != [False]):
 
                 # get view angles from each point
                 for ang in range(0, 360, INTERVAL):
-                    filenameCounter += 1
+                    #filenameCounter += 1
 
                     # creates the url that will be passed to the url reader,
                     # a google streetview image for each address in the address text file
@@ -114,10 +117,14 @@ def GetGSV(LOCATIONS, INTERVAL):
                     # to save each address's streetview image locally
 
                     filename = os.path.join(
-                        classFolder, "nc00" + str(filenameCounter) + "_ang" + str(ang) + ".jpg")
+                        classFolder, title + str(filenameCounter) + "_ang" + str(ang) + ".jpg")
                     # fetches and saves the streetview image
                     # for each address using the url created in the previous steps
                     img = urllib.request.urlretrieve(URL, filename)
+                    img = Image.open(filename)
+                    area = (22, 22, 278, 278) # modify the area if the size of image is changed
+                    cropped_img = img.crop(area)
+                    cropped_img.save(filename)
 
                     # resize to fit DL module if needed
                     # imgSm = Image.open(img[0])
