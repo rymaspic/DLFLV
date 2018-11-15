@@ -2,4 +2,5 @@ predicted_results/
 models/
 image_data/
 train_log/
+.idea/
 
