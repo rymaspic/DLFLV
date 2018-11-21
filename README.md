@@ -6,14 +6,13 @@
 
 A combination of telecom data and image data, we could build a accurater data-driven model of certain city behaviors. In this project we focus on the detection of the "people cluster". (...)
 
-![image]（https://github.com/rymaspic/DLFLV/blob/master/Images/a%20simple%20framework.png）
+![image](DLFLV/Images/a simple framework.png）
 
 ## Outlines
 
 1. Learning From Las Vegas
 2. When Telecom Dances With Computer Vision: From Location-Based-Service(LBS) Data To Google-Street-View(GSV)
 3. Building The Data-driven Model
-  <<<<<<< HEAD
 4. ...
 
 ## Learning From Las Vegas
