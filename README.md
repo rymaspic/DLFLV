@@ -69,7 +69,13 @@ Panorama image stitching:
 
 ![image_marker](https://github.com/rymaspic/DLFLV/blob/master/Images/pano.png)
 
+## Data-driven Model Building
 
+Codes in DL_Model/
+
+### 1.A simple CNN model
+
+### 2. Transfer Learning Based on VGG-19
 
 
 
