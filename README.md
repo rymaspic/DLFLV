@@ -39,7 +39,10 @@ Extract the locations we want, codes in extract_cluster.py and extract_no_cluste
 * The time that has the largest number of "cluster": 09/15/2016 @ 10:35am (UTC), at that time there exists 31 "clusters" accoding to our telecom data
 * We extract the coordinates (the script can avoid the repeated data) with around 1500 "cluster" locations and 5000 "non-cluster" locations, sample Json document is like the testLocations.json
 * Call the gmplot library to plot the heat-map of those cluster coordinates so we could visualize the places we collect the GSV images.
-![image_marker]（https://github.com/rymaspic/DLFLV/blob/master/Images/markermap.png）
+
+![image_heat](https://github.com/rymaspic/DLFLV/blob/master/Images/heatmap.jpg)
+![image_marker](https://github.com/rymaspic/DLFLV/blob/master/Images/markermap.png)
+
 
 ### 3. Google Street View Building
 
