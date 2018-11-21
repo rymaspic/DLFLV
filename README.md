@@ -11,6 +11,7 @@ A combination of telecom data and image data, we could build a accurater data-dr
 1. Learning From Las Vegas
 2. When Telecom Dances With Computer Vision: From Location-Based-Service(LBS) Data To Google-Street-View(GSV)
 3. Building The Data-driven Model
+  <<<<<<< HEAD
 4. ...
 
 ## Learning From Las Vegas
@@ -47,21 +48,6 @@ Images are labelled into "cluster" or "non-cluster" images and then are used for
 Through our tests on a very simple Convoultional Neural Network, we found the images in certain angle may not be so accurate for an image may face directly to a wall but the rear area might be a square that easily forms a cluster. So we decide to build a panorama image-dataset instead. 
 
 To change images from different angles of a camera to a single panorama image, we could use some OpenCV script or use some professional software like PtGUI which is good in batch processing. We are still working on this and trying to find the perfect results.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
