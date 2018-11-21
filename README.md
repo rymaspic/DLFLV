@@ -4,7 +4,7 @@
 
 ## Inroduction: What is this project and what the project for?
 
-A combination of telecom data and image data, we could build a accurater data-driven model of certain city behaviors. In this project we focus on the detection of the "people cluster". (...)
+With a combination of telecom data and image data, we could build a accurater data-driven model of certain city behaviors. In this project we focus on the detection of the "people cluster". (...)
 
 a simple framework of the project:
 
@@ -68,6 +68,8 @@ To change images from different angles of a camera to a single panorama image, w
 Panorama image stitching:
 
 ![image_marker](https://github.com/rymaspic/DLFLV/blob/master/Images/pano.png)
+
+
 
 
 
