@@ -6,7 +6,7 @@
 
 A combination of telecom data and image data, we could build a accurater data-driven model of certain city behaviors. In this project we focus on the detection of the "people cluster". (...)
 
-a simple framework of the project
+a simple framework of the project:
 
 ![image](https://github.com/rymaspic/DLFLV/blob/master/Images/a%20simple%20framework.png)
 ## Outlines
@@ -45,7 +45,9 @@ Extract the locations we want, codes in extract_cluster.py and extract_no_cluste
 
 ![image_heat](https://github.com/rymaspic/DLFLV/blob/master/Images/heatmap.jpg)
 
+
 (2)detailed map: blue markers are cluster locations while yellow are non-clusters
+
 ![image_marker](https://github.com/rymaspic/DLFLV/blob/master/Images/markermap.png)
 
 
@@ -57,12 +59,14 @@ Images are labelled into "cluster" or "non-cluster" images and then are used for
 
 Through our tests on a very simple Convoultional Neural Network, we found the images in certain angle may not be so accurate for an image may face directly to a wall but the rear area might be a square that easily forms a cluster. So we decide to build a panorama image-dataset instead. 
 
-Sample Prediction Results: the right one is reason for us to use the panorama images
+Sample Prediction Results: the right one is reason for us to use the panorama images:
+
 ![image_marker](https://github.com/rymaspic/DLFLV/blob/master/Images/prediction.png)
 
 To change images from different angles of a camera to a single panorama image, we could use some OpenCV script or use some professional software like PtGUI which is good in batch processing. We are still working on this and trying to find the perfect results.
 
 Panorama image stitching:
+
 ![image_marker](https://github.com/rymaspic/DLFLV/blob/master/Images/pano.png)
 
 
