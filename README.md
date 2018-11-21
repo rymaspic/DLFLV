@@ -6,7 +6,7 @@
 
 A combination of telecom data and image data, we could build a accurater data-driven model of certain city behaviors. In this project we focus on the detection of the "people cluster". (...)
 
-![image_framework](DLFLV/Images/a simple framework.png）
+! [image_framework](DLFLV/Images/a simple framework.png）
 
 ## Outlines
 
