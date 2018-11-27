@@ -3,20 +3,43 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import backend as K
+import os
+import argparse
 import matplotlib.pyplot as plt
 from keras.utils.vis_utils import plot_model
+# USAGE
+# python3 train.py options: -bc batch_size -ep epoch -t train_image_folder_name -v validation_image_folder_name
+
 
 ############################ Parameter Defining ##############################
+# construct the argument parse and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-bc", "--batch_size", default = 10,
+                help="batch size for training")
+ap.add_argument("-ep", "--epoch", default = 25,
+                help="training epochs")
+ap.add_argument("-t", "--train_images", default = 'image_data/data_pano/train',
+                help="train images folder name")
+ap.add_argument("-v", "--validation_images", default = 'image_data/data_pano/validation',
+                help="validation images folder name")
+# ap.add_argument("-m", "--model_name_to_save", default = 'adr_pano_1.0',
+#                 help="model_name_to_save")
+args = vars(ap.parse_args())
 
 # dimensions of our images.
 img_width, img_height = 1000, 200
 # paths of train data and validation
-train_data_dir = 'image_data/data_pano/train'
-validation_data_dir = 'image_data/data_pano/validation'
+train_data_dir = args["train_images"]
+validation_data_dir = args["validation_images"]
+
 nb_train_samples = 560
+    #len(os.listdir(args["train_images"]))
 nb_validation_samples = 140
-epochs = 25 # training times, I found after around 10 the increase of accuracy is very limited
-batch_size = 6 # number of samples for training per time
+    #len(os.listdir(args["validation_images"]))
+
+epochs = args["epoch"] # training times, I found after around 10 the increase of accuracy is very limited
+batch_size = args["batch_size"] # number of samples for training per time
+
 if K.image_data_format() == 'channels_first':
     input_shape = (3, img_width, img_height)
 else:
