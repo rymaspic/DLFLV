@@ -4,25 +4,50 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import backend as K
 import matplotlib.pyplot as plt
+from keras.utils.vis_utils import plot_model
 
+############################ Parameter Defining ##############################
 
 # dimensions of our images.
 img_width, img_height = 1000, 200
-
 # paths of train data and validation
-train_data_dir = 'data.pano.adrnet/train'
-validation_data_dir = 'data.pano.adrnet/validation'
+train_data_dir = 'image_data/data_pano/train'
+validation_data_dir = 'image_data/data_pano/validation'
 nb_train_samples = 560
 nb_validation_samples = 140
 epochs = 25 # training times, I found after around 10 the increase of accuracy is very limited
 batch_size = 6 # number of samples for training per time
-
 if K.image_data_format() == 'channels_first':
     input_shape = (3, img_width, img_height)
 else:
     input_shape = (img_width, img_height, 3)
 
-# Model building:
+############################ Data Loader #####################################
+# this is the augmentation configuration we will use for training
+train_datagen = ImageDataGenerator(
+    rescale=1. / 255,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True)
+
+# this is the augmentation configuration we will use for testing:
+# only rescaling
+test_datagen = ImageDataGenerator(rescale=1. / 255)
+
+train_generator = train_datagen.flow_from_directory(
+    train_data_dir,
+    target_size=(img_width, img_height),
+    batch_size=batch_size,
+    class_mode='binary')
+
+validation_generator = test_datagen.flow_from_directory(
+    validation_data_dir,
+    target_size=(img_width, img_height),
+    batch_size=batch_size,
+    class_mode='binary')
+
+
+############################ Model Building #####################################
 model = Sequential()
 # Input layer
 model.add(Conv2D(32, (3, 3), input_shape=input_shape))
@@ -50,38 +75,17 @@ model.add(Activation('sigmoid'))
 
 # print the whole model
 model.summary()
+plot_model(model, to_file='model.png')
 
 # stimulate the loss,optimal funcs
 model.compile(loss='binary_crossentropy',
-              optimizer='rmsprop',
+              optimizer='adam',
               metrics=['accuracy'])
 
 #  option: if you want to start from the training result last time, load the past weights
 #model.load_weights('adr_simple.h5')
 
-# this is the augmentation configuration we will use for training
-train_datagen = ImageDataGenerator(
-    rescale=1. / 255,
-    shear_range=0.2,
-    zoom_range=0.2,
-    horizontal_flip=True)
-
-# this is the augmentation configuration we will use for testing:
-# only rescaling
-test_datagen = ImageDataGenerator(rescale=1. / 255)
-
-train_generator = train_datagen.flow_from_directory(
-    train_data_dir,
-    target_size=(img_width, img_height),
-    batch_size=batch_size,
-    class_mode='binary')
-
-validation_generator = test_datagen.flow_from_directory(
-    validation_data_dir,
-    target_size=(img_width, img_height),
-    batch_size=batch_size,
-    class_mode='binary')
-
+############################ Start Training #####################################
 history = model.fit_generator(
     train_generator,
     steps_per_epoch=nb_train_samples // batch_size,
@@ -97,7 +101,7 @@ plt.plot(history.history['val_acc'])
 plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
-plt.legend(['train', 'test'], loc='upper left')
+plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
 # summarize history for loss
 plt.plot(history.history['loss'])
@@ -105,12 +109,12 @@ plt.plot(history.history['val_loss'])
 plt.title('model loss')
 plt.ylabel('loss')
 plt.xlabel('epoch')
-plt.legend(['train', 'test'], loc='upper left')
+plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
 
 # save_weights only save the weights
-model.save_weights('adr_panocnn2.h5')
+# model.save_weights('adr_panocnn2.h5')
 # save will save the whole net and weights
-# I also wrote a weights2model script if you forget save the model while saved the weights
-model.save('adr_panocnn2.h5')
+# I also wrote a weights2model script to use the weights for a certain model
+model.save('adr_pano_model1.0.h5')
 
