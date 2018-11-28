@@ -86,6 +86,7 @@ locations = json.load(open(args["locations"]+".json"))
 def GetGSV(LOCATIONS, INTERVAL):
     "gets photos from GSV for given locations"
     # start a loop through the 'lines' list
+    f = open("images_and_locations.txt", "w")  # opens file
     for dl_class in LOCATIONS:
         filenameCounter = 0
 
@@ -126,12 +127,15 @@ def GetGSV(LOCATIONS, INTERVAL):
                     cropped_img = img.crop(area)
                     cropped_img.save(filename)
 
+                    f.write(filename + " " + latLon + "\n")
+
                     # resize to fit DL module if needed
                     # imgSm = Image.open(img[0])
                     # imgSm.resize((227, 227), Image.ANTIALIAS).save(img[0])
                     print("OUTPUT FILENAME:" + filename)
             else:
                 print(latLon, " is not a Google StView location")
+    f.close()
 
 
 def checkSV(LATLON):
