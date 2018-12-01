@@ -52,11 +52,13 @@ import argparse
 
 # streetview url up to the address
 pre = "https://maps.googleapis.com/maps/api/streetview?"
+pre_meta = "https://maps.googleapis.com/maps/api/streetview/metadata?"
 head = "&heading="
 # the pitch[height] of the camera
 pitch = "&pitch=-0.76"
 loc = "location="
-title = "cluster" # "nocluster"
+img_meta_locations_file = "Json_Files/meta_locations.json" #json file name to save the meta information of GSV images
+#title = "cluster" # "nocluster"
 
 
 # construct the argument parse and parse the arguments
@@ -86,13 +88,14 @@ locations = json.load(open(args["locations"]+".json"))
 def GetGSV(LOCATIONS, INTERVAL):
     "gets photos from GSV for given locations"
     # start a loop through the 'lines' list
-    f = open("images_and_locations.txt", "w")  # opens file
+    f = open("Json_Files/images_and_locations_test.txt", "w")  # opens file
+    meta_locations = []
     for dl_class in LOCATIONS:
         filenameCounter = 0
 
         # make the folders for each class if missing
         # this is the directory that will store the streetview images
-        classFolder = r"images/" + title + "/" + str(dl_class)
+        classFolder = r"images/" + str(dl_class)
         if not os.path.exists(classFolder):
             os.makedirs(classFolder)
 
@@ -113,15 +116,31 @@ def GetGSV(LOCATIONS, INTERVAL):
                     URL = pre + loc + latLon + '&size=300x300' + \
                         head + str(ang) + pitch + '&source=outdoor' + suf  #only get the indoor images
 
+                    Meta_URL = pre_meta + loc + latLon + '&size=300x300' + \
+                        head + str(ang) + pitch + '&source=outdoor' + suf  #only get the indoor images
+
                     print('\n', URL, '\n')
+                    print('\n', Meta_URL, '\n')
                     # creates the filename needed
                     # to save each address's streetview image locally
 
                     filename = os.path.join(
-                        classFolder, title + str(filenameCounter) + "_ang" + str(ang) + ".jpg")
+                        classFolder,  str(filenameCounter) + "_ang" + str(ang) + ".jpg")
                     # fetches and saves the streetview image
                     # for each address using the url created in the previous steps
                     img = urllib.request.urlretrieve(URL, filename)
+
+                    # the GSV API returns the nearest image given a GPS location, but we need call the meta_image API
+                    # to get the exact GPS information the image were toke
+                    img_meta = urllib.request.urlopen(Meta_URL).read()
+                    encoding = urllib.request.urlopen(Meta_URL).info().get_content_charset('utf-8')
+                    img_meta = json.loads(img_meta.decode(encoding))
+                    # print("metadata: ", img_meta["location"])
+                    # eg.metadata:  {'lat': 42.50349875571963, 'lng': 1.516247674376121}
+                    meta_loc = [img_meta["location"]['lat'], img_meta["location"]['lng']]
+                    print(meta_loc)
+                    meta_locations.append(meta_loc)
+
                     img = Image.open(filename)
                     area = (22, 22, 278, 278) # modify the area if the size of image is changed
                     cropped_img = img.crop(area)
@@ -136,6 +155,9 @@ def GetGSV(LOCATIONS, INTERVAL):
             else:
                 print(latLon, " is not a Google StView location")
     f.close()
+    meta_dict = {"meta_locations": meta_locations}
+    with open(img_meta_locations_file, 'w') as w:
+        json.dump(meta_dict, w, indent=4)
 
 
 def checkSV(LATLON):
