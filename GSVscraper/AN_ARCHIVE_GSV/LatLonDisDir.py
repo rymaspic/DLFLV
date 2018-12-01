@@ -113,10 +113,13 @@ class LatLonDisDir:
                 URL = checkURLstart + latLon + checkURLend
                 response = requests.get(URL)
                 root = ET.fromstring(response.content)
+                print(URL)
+                #root = response.content
 
                 # output
                 print('checking', latLon, '\n' 'at angle', math.degrees(a))
                 if root:
+                    print(root)
                     # print("( ͡° ͜ʖ ͡°)")
                     gmapLatList.append(latOut)
                     gmapLonList.append(lonOut)
@@ -136,4 +139,4 @@ class LatLonDisDir:
 
 # calling class
 obj = LatLonDisDir(42.360197, -71.087115)
-obj.gsvFinder(2000, 50, 60)
+obj.gsvFinder(100, 50, 60)
