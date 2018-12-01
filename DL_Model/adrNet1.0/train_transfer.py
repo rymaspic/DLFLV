@@ -5,60 +5,55 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import applications
 from keras import backend as K
 import matplotlib.pyplot as plt
+import argparse
+from keras.utils.vis_utils import plot_model
 
+# USAGE
+# python3 train_transfer.py options: -bc batch_size -ep epoch -t train_image_folder_name -v validation_image_folder_name
+
+
+############################ Parameter Defining ##############################
+# construct the argument parse and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-bc", "--batch_size", default = 10,
+                help="batch size for training")
+ap.add_argument("-ep", "--epoch", default = 25,
+                help="training epochs")
+ap.add_argument("-t", "--train_images", default = 'image_data/data_pano/train',
+                help="train images folder name")
+ap.add_argument("-v", "--validation_images", default = 'image_data/data_pano/validation',
+                help="validation images folder name")
+# ap.add_argument("-m", "--model_name_to_save", default = 'adr_pano_1.0',
+#                 help="model_name_to_save")
+args = vars(ap.parse_args())
 
 # dimensions of our images.
 img_width, img_height = 1000, 200
-
 # paths of train data and validation
-train_data_dir = 'data.pano.adrnet/train'
-validation_data_dir = 'data.pano.adrnet/validation'
+train_data_dir = args["train_images"]
+validation_data_dir = args["validation_images"]
+
 nb_train_samples = 560
+    #len(os.listdir(args["train_images"]))
 nb_validation_samples = 140
-epochs = 25 # training times, I found after around 10 the increase of accuracy is very limited
-batch_size = 6 # number of samples for training per time
+    #len(os.listdir(args["validation_images"]))
+
+epochs = args["epoch"] # training times, I found after around 10 the increase of accuracy is very limited
+batch_size = args["batch_size"] # number of samples for training per time
 
 if K.image_data_format() == 'channels_first':
     input_shape = (3, img_width, img_height)
 else:
     input_shape = (img_width, img_height, 3)
 
-# Model building:
 
-
-model = applications.VGG19(weights = "imagenet", include_top=False, input_shape = input_shape)
-
-# Freeze the layers which you don't want to train. Here I am freezing the first 5 layers.
-for layer in model.layers[:5]:
-    layer.trainable = False
-
-# Output layers, flatten and dropout to avoid the regulation
-x = model.output
-x = Flatten()(x)
-x = Dense(64,activation="relu")(x)
-x = Dropout(0.5)(x)
-x = Dense(64,activation="relu")(x)
-prediction = Dense(1,activation='sigmoid')(x)
-
-
-model = Model(input = model.input, output = prediction)
-
-
-# print the whole model
-model.summary()
-# stimulate the loss,optimal funcs
-model.compile(loss='binary_crossentropy',
-              optimizer='rmsprop',
-              metrics=['accuracy'])
-
-#  option: if you want to start from the training result last time, load the past weights
-#model.load_weights('adr_simple.h5')
-
+############################ Data Loader #####################################
 # this is the augmentation configuration we will use for training
 train_datagen = ImageDataGenerator(
     rescale=1. / 255,
     shear_range=0.2,
     zoom_range=0.2,
+    vertical_flip=True,
     horizontal_flip=True)
 
 # this is the augmentation configuration we will use for testing:
@@ -76,6 +71,31 @@ validation_generator = test_datagen.flow_from_directory(
     target_size=(img_width, img_height),
     batch_size=batch_size,
     class_mode='binary')
+
+
+############################ Model Building #####################################
+model = applications.VGG19(weights = "imagenet", include_top=False, input_shape = input_shape)
+# Freeze the layers which you don't want to train. Here I am freezing the first 5 layers.
+for layer in model.layers[:5]:
+    layer.trainable = False
+# Output layers, flatten and dropout to avoid the regulation
+x = model.output
+x = Flatten()(x)
+x = Dense(64,activation="relu")(x)
+x = Dropout(0.5)(x)
+x = Dense(64,activation="relu")(x)
+prediction = Dense(1,activation='sigmoid')(x)
+model = Model(input = model.input, output = prediction)
+# print the whole model
+model.summary()
+plot_model(model, to_file='model.png')
+# stimulate the loss,optimal funcs
+model.compile(loss='binary_crossentropy',
+              optimizer='rmsprop',
+              metrics=['accuracy'])
+
+#  option: if you want to start from the training result last time, load the past weights
+#model.load_weights('adr_simple.h5')
 
 history = model.fit_generator(
     train_generator,
@@ -104,7 +124,7 @@ plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 
 # save_weights only save the weights
-model.save_weights('adr_panocnn2.h5')
+# model.save_weights('adr_panocnn2.h5')
 # save will save the whole net and weights
 # I also wrote a weights2model script if you forget save the model while saved the weights
-model.save('adr_panocnn2.h5')
+model.save('adr_pano_vgg19.h5')
