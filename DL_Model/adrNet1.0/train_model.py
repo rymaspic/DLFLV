@@ -14,28 +14,28 @@ from keras.utils.vis_utils import plot_model
 ############################ Parameter Defining ##############################
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-bc", "--batch_size", default = 10,
+ap.add_argument("-bc", "--batch_size", default = 20,
                 help="batch size for training")
 ap.add_argument("-ep", "--epoch", default = 25,
                 help="training epochs")
-ap.add_argument("-t", "--train_images", default = 'image_data/data_pano/train',
+ap.add_argument("-t", "--train_images", default = 'image_data/data_12.3/train',
                 help="train images folder name")
-ap.add_argument("-v", "--validation_images", default = 'image_data/data_pano/validation',
+ap.add_argument("-v", "--validation_images", default = 'image_data/data_12.3/val',
                 help="validation images folder name")
 # ap.add_argument("-m", "--model_name_to_save", default = 'adr_pano_1.0',
 #                 help="model_name_to_save")
 args = vars(ap.parse_args())
 
 # dimensions of our images.
-img_width, img_height = 1000, 200
+img_width, img_height = 512, 512
 # paths of train data and validation
 train_data_dir = args["train_images"]
 validation_data_dir = args["validation_images"]
 
-nb_train_samples = 560
-    #len(os.listdir(args["train_images"]))
-nb_validation_samples = 140
-    #len(os.listdir(args["validation_images"]))
+nb_train_samples = 8000
+#nb_train_samples = len(os.listdir(train_data_dir))
+nb_validation_samples = 2000
+#nb_validation_samples = len(os.listdir(validation_data_dir))
 
 epochs = args["epoch"] # training times, I found after around 10 the increase of accuracy is very limited
 batch_size = args["batch_size"] # number of samples for training per time
@@ -51,8 +51,9 @@ train_datagen = ImageDataGenerator(
     rescale=1. / 255,
     shear_range=0.2,
     zoom_range=0.2,
-    vertical_flip=True,
-    horizontal_flip=True)
+    #vertical_flip=True,
+    #horizontal_flip=True'=
+    )
 
 # this is the augmentation configuration we will use for testing:
 # only rescaling
@@ -120,14 +121,16 @@ history = model.fit_generator(
 # list all data in history
 print(history.history.keys())
 # summarize history for accuracy
+plt.figure(1)
 plt.plot(history.history['acc'])
 plt.plot(history.history['val_acc'])
 plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'validation'], loc='upper left')
-plt.show()
+plt.savefig('12.6_acc.png')
 # summarize history for loss
+plt.figure(2)
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
 plt.title('model loss')
@@ -135,10 +138,12 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
+plt.savefig('12.6_loss.png')
+
 
 # save_weights only save the weights
 # model.save_weights('adr_panocnn2.h5')
 # save will save the whole net and weights
 # I also wrote a weights2model script to use the weights for a certain model
-model.save('adr_pano_model1.0.h5')
+model.save('adr_model_12.6.h5')
 
