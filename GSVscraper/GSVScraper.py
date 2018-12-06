@@ -44,6 +44,7 @@ import json
 import xml.etree.ElementTree as ET
 # for command line args
 import argparse
+import random
 
 
 # # # # # # # # # # # # # # # #
@@ -55,7 +56,7 @@ pre = "https://maps.googleapis.com/maps/api/streetview?"
 pre_meta = "https://maps.googleapis.com/maps/api/streetview/metadata?"
 head = "&heading="
 # the pitch[height] of the camera
-pitch = "&pitch=-0.76"
+pitch = "&pitch=0"
 loc = "location="
 img_meta_locations_file = "Json_Files/meta_locations.json" #json file name to save the meta information of GSV images
 #title = "cluster" # "nocluster"
@@ -88,7 +89,7 @@ locations = json.load(open(args["locations"]+".json"))
 def GetGSV(LOCATIONS, INTERVAL):
     "gets photos from GSV for given locations"
     # start a loop through the 'lines' list
-    f = open("Json_Files/images_and_locations_test.txt", "w")  # opens file
+    f = open("Json_Files/meta_images_and_locations_cluster.txt", "w")  # opens file
     meta_locations = []
     for dl_class in LOCATIONS:
         filenameCounter = 0
@@ -108,16 +109,20 @@ def GetGSV(LOCATIONS, INTERVAL):
             if (checkSV(latLon) != [False]):
 
                 # get view angles from each point
+                init_ang = random.randint(0,359)
+                # for every location, randomly generate a initial angle to avoid
+                # unexpected bias when some parts of a city have a north-south street network
+                # while other parts have a diagonal-direction street network
                 for ang in range(0, 360, INTERVAL):
                     #filenameCounter += 1
 
                     # creates the url that will be passed to the url reader,
                     # a google streetview image for each address in the address text file
-                    URL = pre + loc + latLon + '&size=300x300' + \
-                        head + str(ang) + pitch + '&source=outdoor' + suf  #only get the indoor images
+                    URL = pre + loc + latLon + '&size=600x600' + \
+                        head + str(init_ang + ang) + pitch + '&source=outdoor' + suf  #only get the indoor images
 
                     Meta_URL = pre_meta + loc + latLon + '&size=300x300' + \
-                        head + str(ang) + pitch + '&source=outdoor' + suf  #only get the indoor images
+                        head + str(init_ang + ang) + pitch + '&source=outdoor' + suf  #only get the indoor images
 
                     print('\n', URL, '\n')
                     print('\n', Meta_URL, '\n')
@@ -142,7 +147,7 @@ def GetGSV(LOCATIONS, INTERVAL):
                     meta_locations.append(meta_loc)
 
                     img = Image.open(filename)
-                    area = (22, 22, 278, 278) # modify the area if the size of image is changed
+                    area = (44, 44, 556, 556) # modify the area if the size of image is changed
                     cropped_img = img.crop(area)
                     cropped_img.save(filename)
 
