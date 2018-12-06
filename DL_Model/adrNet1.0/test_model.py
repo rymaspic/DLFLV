@@ -22,14 +22,17 @@ ap.add_argument("-m", "--model", default = 'models/adrnet.h5',
                 help="path to trained model")
 ap.add_argument("-f1", "--folder1", default = 'image_data/data_12.3/test/clusters',
                 help="path to test folder")
-ap.add_argument("-f2", "--folder2", default = 'image_data/data_12.3/test/no_cluster',
+ap.add_argument("-f2", "--folder2", default = 'image_data/data_12.3/test/no_clusters',
                 help="path to test folder")
 args = vars(ap.parse_args())
 
-# makes folder for results
-classFolder = r"predicted/nc"
-if not os.path.exists(classFolder):
-    os.makedirs(classFolder)
+#makes folder for results
+classFolder1 = r"predicted/c"
+if not os.path.exists(classFolder1):
+    os.makedirs(classFolder1)
+classFolder2 = r"predicted/nc"
+if not os.path.exists(classFolder2):
+    os.makedirs(classFolder2)
 
 
 folderPaths1 = sorted(list(paths.list_images(args["folder1"])))
@@ -46,7 +49,7 @@ model.summary()
 # loop over the input images
 for imagePath in folderPaths1:
     # load the image
-
+    print(imagePath)
     image = cv2.imread(imagePath)
     #image.imshow()
     #cv2.imshow('image', image)
@@ -61,7 +64,7 @@ for imagePath in folderPaths1:
 
 
     # classify the input image
-    print(model.predict(image))
+    #print(model.predict(image))
     a = model.predict(image)[0]
     # print(a, b)
     # build the printed label
@@ -80,14 +83,15 @@ for imagePath in folderPaths1:
     output = imutils.resize(orig, width=512, height=512)
     cv2.putText(output, label, (10, 25),  cv2.FONT_HERSHEY_SIMPLEX,
                 0.5, (0, 255, 0), 2)
-    finalImg = cv2.imwrite("predicted/c/" + flag + str(counter1) +
-                           "_" + str(int(proba*100))+".jpg", output)
+    finalImg = cv2.imwrite("predicted/c/" + flag +
+                           "_" + str(int(proba*100)) + "_" + str(counter1) + ".jpg", output)
     counter1 += 1
+    print("counter1",counter1)
 #print("The test accuracy: " + str(count_right1/counter1))
 
 for imagePath in folderPaths2:
     # load the image
-
+    print(imagePath)
     image = cv2.imread(imagePath)
     #image.imshow()
     #cv2.imshow('image', image)
@@ -121,9 +125,10 @@ for imagePath in folderPaths2:
     output = imutils.resize(orig, width=512, height=512)
     cv2.putText(output, label, (10, 25),  cv2.FONT_HERSHEY_SIMPLEX,
                 0.5, (0, 255, 0), 2)
-    finalImg = cv2.imwrite("predicted/nc/" + flag + str(counter2) +
-                           "_" + str(int(proba*100))+".jpg", output)
+    finalImg = cv2.imwrite("predicted/nc/" + flag +
+                           "_" + str(int(proba*100)) + "_" + str(counter2) + ".jpg", output)
     counter2 += 1
+    print("counter2",counter2)
 
 #print("The test accuracy: " + str(count_cluster/counter))
 
