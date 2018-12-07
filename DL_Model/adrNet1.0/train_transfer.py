@@ -15,27 +15,27 @@ from keras.utils.vis_utils import plot_model
 ############################ Parameter Defining ##############################
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-bc", "--batch_size", default = 10,
+ap.add_argument("-bc", "--batch_size", default = 20,
                 help="batch size for training")
-ap.add_argument("-ep", "--epoch", default = 25,
+ap.add_argument("-ep", "--epoch", default = 30,
                 help="training epochs")
-ap.add_argument("-t", "--train_images", default = 'image_data/data_pano/train',
+ap.add_argument("-t", "--train_images", default = 'image_data/data_12.3/train',
                 help="train images folder name")
-ap.add_argument("-v", "--validation_images", default = 'image_data/data_pano/validation',
+ap.add_argument("-v", "--validation_images", default = 'image_data/data_12.3/val',
                 help="validation images folder name")
 # ap.add_argument("-m", "--model_name_to_save", default = 'adr_pano_1.0',
 #                 help="model_name_to_save")
 args = vars(ap.parse_args())
 
 # dimensions of our images.
-img_width, img_height = 1000, 200
+img_width, img_height = 512, 512
 # paths of train data and validation
 train_data_dir = args["train_images"]
 validation_data_dir = args["validation_images"]
 
-nb_train_samples = 560
+nb_train_samples = 8000
     #len(os.listdir(args["train_images"]))
-nb_validation_samples = 140
+nb_validation_samples = 2000
     #len(os.listdir(args["validation_images"]))
 
 epochs = args["epoch"] # training times, I found after around 10 the increase of accuracy is very limited
@@ -88,10 +88,10 @@ prediction = Dense(1,activation='sigmoid')(x)
 model = Model(input = model.input, output = prediction)
 # print the whole model
 model.summary()
-plot_model(model, to_file='model.png')
+plot_model(model, to_file='model_vgg19.png')
 # stimulate the loss,optimal funcs
 model.compile(loss='binary_crossentropy',
-              optimizer='rmsprop',
+              optimizer='adam',
               metrics=['accuracy'])
 
 #  option: if you want to start from the training result last time, load the past weights
@@ -107,6 +107,7 @@ history = model.fit_generator(
 # list all data in history
 print(history.history.keys())
 # summarize history for accuracy
+plt.figure(1)
 plt.plot(history.history['acc'])
 plt.plot(history.history['val_acc'])
 plt.title('model accuracy')
@@ -114,7 +115,10 @@ plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+plt.savefig('12.6_acc_vgg19.png')
+
 # summarize history for loss
+plt.figure(2)
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
 plt.title('model loss')
@@ -122,9 +126,10 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+plt.savefig('12.6_loss_vgg16.png')
 
 # save_weights only save the weights
 # model.save_weights('adr_panocnn2.h5')
 # save will save the whole net and weights
 # I also wrote a weights2model script if you forget save the model while saved the weights
-model.save('adr_pano_vgg19.h5')
+model.save('adr_vgg16_12.6.h5')
