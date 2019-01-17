@@ -74,6 +74,6 @@ Codes in DL_Model/
 
 ### 1.A simple CNN model
 
-![image_marker](DL_Model/adrNet1.0/model.png)
+![image_marker](Images/model.png)
 
 ### 2. Transfer Learning Based on VGG-19
