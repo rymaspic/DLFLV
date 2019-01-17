@@ -3,3 +3,9 @@
 key
 .DS_Store
 /Readings
+predicted_results/
+models/
+image_data/
+train_log/
+.idea/
+
