@@ -1,33 +1,22 @@
-# Why People Gather Together in a City?
+# Deep Image Of The City
 
 ![image](Images/learning_from_lasvegas.jpg)
 
-## Introduction: What is this project and what the project for?
-
-With a combination of telecom data and image data, we could build a accurate data-driven model of certain city behaviors. In this project we focus on the detection of the "people cluster". (...)
-
-a simple framework of the project:
-
-![image](Images/a%20simple%20framework.png)
+With a combination of telecom data and image data, we build a data-driven model of certain human dynamics.
 
 ## Outlines
 
-1. Learning From Las Vegas
-2. When Telecom Dances With Computer Vision: From Location-Based-Service(LBS) Data To Google-Street-View(GSV)
-3. Building The Data-driven Model
-4. ...
-
-## Learning From Las Vegas
-
-...
+1. Telecom Dances + Computer Vision: From Location-Based-Service(LBS) Data To Google-Street-View(GSV)
+2. Building DL Model for predicting Clusters vs Non-clusters
+3. Using ACM to find visual features associated with clusters
 
 ## Dataset Building
 
-Codes in GSVScraper/
+Code in `GSVScraper/`
 
 ### 1. The Andorra Data Package
 
-What we have is the data package including one-day's telecom information collected in Andorra, the format is listed in the Sample Json/ :
+Data includs telecom data collected in Andorra, the format is listed in the `Sample Json/` :
 
 - "C" means the cluster information we defined through "Stay Event"
 - "UnC" are some random information of places we did not defined to be cluster
