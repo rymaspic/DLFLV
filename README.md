@@ -67,5 +67,5 @@ A simple CNN model:
 
 Some Class Activation Map (CAM) results of scenes predicted to be "cluster":
 
-![image-Cam](Images/Sample-CAM.png)
+![image-Cam](https://github.com/rymaspic/DLFLV/blob/master/Images/Sample-CAMap.png)
 
