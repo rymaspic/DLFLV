@@ -8,7 +8,7 @@ With a combination of telecom data and image data, we build a data-driven model 
 
 1. Telecom Dances + Computer Vision: From Location-Based-Service(LBS) Data To Google-Street-View(GSV)
 2. Building DL Model for predicting Clusters vs Non-clusters
-3. Using ACM to find visual features associated with clusters
+3. Using Class Activation Map (CAM) to find visual features associated with clusters
 
 ## Dataset Building
 
@@ -61,8 +61,11 @@ Panorama image stitching:
 
 Codes in DL_Model/
 
-### 1.A simple CNN model
+A simple CNN model:
 
 ![image_marker](Images/model.png)
 
-### 2. Transfer Learning Based on VGG-19
+Some Class Activation Map (CAM) results of scenes predicted to be "cluster":
+
+![image-Cam](Images/Sample-CAM.png)
+
