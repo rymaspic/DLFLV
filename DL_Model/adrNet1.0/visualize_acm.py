@@ -10,13 +10,28 @@ import matplotlib.pyplot as plt
 from keras.preprocessing import image as Image
 import cv2
 import os
+import argparse
+
+# construct the argument parse and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-input", "--input_imgs", required=False, default= "predicted/cam_cluster",
+                help="directory name that contains all the images")
+ap.add_argument("-output", "--output_imgs", required=False, default= "cam",
+                help="directory name that contains all the output CAM images")
+ap.add_argument("-model", "--model", required=True,
+                help="The model we use for visualizing CAM")
+
+args = vars(ap.parse_args())
+imgs_path = args["input_imgs"]
+out_path = args["output_imgs"]
 
 def cam(img_path,output_path):
     K.clear_session()
     #config = model.get_config()
     #print(model)
     # model = model.from_config(config)
-    model = models.load_model("adr_model_12.6.h5")
+    #model = models.load_model("adr_model_12.6.h5")
+    model = args["model"]
     #model.summary()
     img = cv2.imread(img_path)
     img = cv2.resize(img, (512, 512))
@@ -77,21 +92,19 @@ def cam(img_path,output_path):
 # plt.show()
 #model = models.load_model()
 #makes folder for results
-classFolder1 = r"cam"
-if not os.path.exists(classFolder1):
-    os.makedirs(classFolder1)
-classFolder2 = r"cam"
-if not os.path.exists(classFolder2):
-    os.makedirs(classFolder2)
+classFolder = args["output"]
+if not os.path.exists(classFolder):
+    os.makedirs(classFolder)
+
 
 #model = models.load_model("adr_model_12.6.h5")
 
-for image in os.listdir("predicted/cam_cluster"):
-    path = os.path.join("predicted/cam_cluster",image)
+for image in os.listdir(imgs_path):
+    path = os.path.join(imgs_path,image)
     if cv2.imread(path) is not None:
         print(path)
-        print('cam/' + str(image))
-        cam(path,'cam/' + str(image))
+        print(out_path + '/' + str(image))
+        cam(path,out_path + '/' + str(image))
     else:
         pass
 
