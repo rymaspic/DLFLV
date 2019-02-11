@@ -11,7 +11,7 @@ from keras.preprocessing import image as Image
 import cv2
 import os
 import argparse
-
+# python3 visualize_cam.py -model The Model for visualizing CAM
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-input", "--input_imgs", required=False, default= "predicted/cam_cluster",
