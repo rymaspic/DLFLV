@@ -1,5 +1,5 @@
 # USAGE
-# python3 test_model.py --m model.model --f test
+# python3 test_model.py -m model.model -f1 test_cluster_imgs -f2 test_no_cluster_imgs
 
 # import the necessary packages
 from keras.preprocessing import image as Image
@@ -21,9 +21,9 @@ ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", default = 'models/adrnet.h5',
                 help="path to trained model")
 ap.add_argument("-f1", "--folder1", default = 'image_data/data_12.3/test/clusters',
-                help="path to test folder")
+                help="path to test folder1")
 ap.add_argument("-f2", "--folder2", default = 'image_data/data_12.3/test/no_clusters',
-                help="path to test folder")
+                help="path to test folder2")
 args = vars(ap.parse_args())
 
 #makes folder for results
