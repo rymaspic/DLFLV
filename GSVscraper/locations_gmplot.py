@@ -6,7 +6,7 @@ import argparse
 # # # # # # # # # # # # # # # #
 #
 # USAGE:
-# python3 -k your_google_key -locations path_to_location_JSON_file -map name_of_map_html
+# python3 locations_gmplot.py -k your_google_key -locations path_to_location_JSON_file -map name_of_map_html
 #
 # # # # # # # # # # # # # # # #
 # construct the argument parse and parse the arguments
