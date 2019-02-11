@@ -58,7 +58,9 @@ head = "&heading="
 # the pitch[height] of the camera
 pitch = "&pitch=0"
 loc = "location="
+# Files need to defined:
 img_meta_locations_file = "Json_Files/meta_locations.json" #json file name to save the meta information of GSV images
+
 #title = "cluster" # "nocluster"
 
 
@@ -89,11 +91,10 @@ locations = json.load(open(args["locations"]+".json"))
 def GetGSV(LOCATIONS, INTERVAL):
     "gets photos from GSV for given locations"
     # start a loop through the 'lines' list
-    f = open("Json_Files/meta_images_and_locations_cluster.txt", "w")  # opens file
+    f = open(img_meta_locations_file, "w")  # opens file
     meta_locations = []
     for dl_class in LOCATIONS:
         filenameCounter = 0
-
         # make the folders for each class if missing
         # this is the directory that will store the streetview images
         classFolder = r"images/" + str(dl_class)
@@ -147,7 +148,8 @@ def GetGSV(LOCATIONS, INTERVAL):
                     meta_locations.append(meta_loc)
 
                     img = Image.open(filename)
-                    area = (44, 44, 556, 556) # modify the area if the size of image is changed
+                    area = (44, 44, 556, 556) # modify the area if the size of image is changed,
+                    # current size is 600*600 which is the maxmium size of "free" GSV API
                     cropped_img = img.crop(area)
                     cropped_img.save(filename)
 
